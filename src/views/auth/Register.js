@@ -1,15 +1,15 @@
-import React, { useEffect, useState} from "react";
-import { auth, registerWithEmailAndPassword, signInWithGoogle } from "firebase";
-import { Link, useHistory } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useState} from "react";
+import { registerWithEmailAndPassword, signInWithGoogle } from "firebase";
+import { useHistory } from "react-router-dom";
+// import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, loading] = useAuthState(auth);
+  // const [user, loading] = useAuthState(auth);
   const history = useHistory();
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -19,7 +19,8 @@ export default function Register() {
       history.push("/auth/login");
       
     } catch (err) {
-      setError(err.message);
+      console.error(err);
+      alert(err.message);
     }
   };
   // useEffect(() => {

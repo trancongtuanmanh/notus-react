@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, Redirect, Link} from "react-router-dom";
-import { auth, logInWithEmailAndPassword, signInWithGoogle } from "firebase";
+import React, { useState } from "react";
+import { Redirect, Link} from "react-router-dom";
+import { logInWithEmailAndPassword, signInWithGoogle } from "firebase";
 
 
 
@@ -8,7 +8,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const history = useHistory();
 
   const handleSignInWithGoogle = () => {
     signInWithGoogle()

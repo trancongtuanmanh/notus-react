@@ -20,6 +20,13 @@
     "react-scripts": "4.0.3",
     "tailwindcss": "2.0.4"
   },
+  "exports": {
+    ".": {
+      "require": "./lib/postcss.js",
+      "import": "./lib/postcss.mjs"
+    },
+    "./lib/*": "./lib/*.js"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && gulp licenses",

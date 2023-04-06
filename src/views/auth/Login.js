@@ -1,7 +1,45 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, Redirect, Link} from "react-router-dom";
+import { auth, logInWithEmailAndPassword, signInWithGoogle } from "firebase";
+
+
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const history = useHistory();
+
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle()
+      .then((result) => {
+        // Handle successful sign in with Google
+        console.log(result);
+        setLoggedIn(true);
+      })
+      .catch((error) => {
+        // Handle errors during sign in with Google
+        console.log(error);
+      });
+  };
+  
+  const handleLoginEmail = async (e) => {
+    e.preventDefault();
+    try {
+      if (!email) alert("Please enter email");
+      if (!password) alert("Please enter password");
+      
+      await logInWithEmailAndPassword(email, password);
+      setLoggedIn(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+if (loggedIn) {
+  return <Redirect to="/admin/dashboard" />;
+  }
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -29,6 +67,7 @@ export default function Login() {
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
+                    onClick={handleSignInWithGoogle}
                   >
                     <img
                       alt="..."
@@ -56,6 +95,7 @@ export default function Login() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
 
@@ -70,6 +110,7 @@ export default function Login() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
                   <div>
@@ -89,6 +130,7 @@ export default function Login() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={handleLoginEmail}
                     >
                       Sign In
                     </button>

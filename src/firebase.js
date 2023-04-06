@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
+  GithubAuthProvider,
   getAuth,
   signInWithPopup,
   signInWithEmailAndPassword,
@@ -50,6 +51,26 @@ const signInWithGoogle = async () => {
     alert(err.message);
   }
 };
+const githubProvider = new GithubAuthProvider();
+const signInWithGithub = async () => {
+    try {
+        const res = await signInWithPopup(auth, githubProvider);
+        const user = res.user;
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        const docs = await getDocs(q);
+        if (docs.docs.length === 0) {
+            await addDoc(collection(db, "users"), {
+                uid: user.uid,
+                name: user.displayName,
+                authProvider: "github",
+                email: user.email,
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+};
 const logInWithEmailAndPassword = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -82,15 +103,21 @@ const sendPasswordReset = async (email) => {
     alert(err.message);
   }
 };
-const logout = () => {
-  signOut(auth);
+const logOut = async () => {
+    try {
+        await signOut(auth);
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
 };
 export {
   auth,
   db,
   signInWithGoogle,
+  signInWithGithub,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordReset,
-  logout,
+  logOut
 };

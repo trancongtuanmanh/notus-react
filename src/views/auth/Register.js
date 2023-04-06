@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { registerWithEmailAndPassword, signInWithGoogle } from "firebase";
+import { registerWithEmailAndPassword, signInWithGoogle, signInWithGithub } from "firebase";
 import { useHistory } from "react-router-dom";
 // import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -28,6 +28,32 @@ export default function Register() {
   //   if (user) history.replace("/dashboard");
   // }, [user, loading]);
 
+  const handleSignInWithGoogle = () => {
+    signInWithGoogle()
+      .then((result) => {
+        // Handle successful sign in with Google
+        console.log(result);
+        history.push("/admin/dashboard");
+      })
+      .catch((error) => {
+        // Handle errors during sign in with Google
+        console.log(error);
+      });
+  };
+
+  const handleSignInWithGithub = () => {
+    signInWithGithub()
+      .then((result) => {
+        // Handle successful sign in with Github
+        console.log(result);
+        history.push("/admin/dashboard");
+      })
+      .catch((error) => {
+        // Handle errors during sign in with Github
+        console.log(error);
+      });
+  };
+
   
   return (
     <>
@@ -45,6 +71,7 @@ export default function Register() {
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
+                    onClick={handleSignInWithGithub}
                   >
                     <img
                       alt="..."
@@ -56,7 +83,7 @@ export default function Register() {
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
-                    onClick={signInWithGoogle}
+                    onClick={handleSignInWithGoogle}
                   >
                     <img
                       alt="..."

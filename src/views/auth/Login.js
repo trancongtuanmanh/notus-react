@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Redirect, Link} from "react-router-dom";
-import { logInWithEmailAndPassword, signInWithGoogle } from "firebase";
+import { logInWithEmailAndPassword, signInWithGoogle, signInWithGithub } from "firebase";
 
 
 
@@ -35,6 +35,19 @@ export default function Login() {
     }
   };
 
+const handleSignInWithGithub = () => {
+  signInWithGithub()
+    .then((result) => { 
+      // Handle successful sign in with Github
+      console.log(result);
+      setLoggedIn(true);
+    })
+    .catch((error) => {
+      // Handle errors during sign in with Github
+      console.log(error);
+    });
+};
+
 if (loggedIn) {
   return <Redirect to="/admin/dashboard" />;
   }
@@ -55,6 +68,7 @@ if (loggedIn) {
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 font-normal px-4 py-2 rounded outline-none focus:outline-none mr-2 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
+                    onClick={handleSignInWithGithub}
                   >
                     <img
                       alt="..."
